@@ -1,0 +1,44 @@
+@html.extend('cobalayout',function(model){
+
+	@html.block('body',function(model){
+
+            <h1>@model.title</h1>
+            <div class="wrapper" style="background-image: url('static/images/bg-registration-form-2.jpg');">
+			<div class="inner">
+				<form action="/users/" method="POST">
+					<h3>Registration Form</h3>
+					<div class="form-group">
+						<div class="form-wrapper">
+							<label for="">First Name</label>
+							<input type="text" class="form-control">
+						</div>
+						<div class="form-wrapper">
+							<label for="">Last Name</label>
+							<input type="text" class="form-control">
+						</div>
+					</div>
+					<div class="form-wrapper">
+						<label for="">NRP</label>
+						<input type="text" class="form-control" name="nrp">
+					</div>
+					<div class="form-wrapper">
+						<label for="">Password</label>
+						<input type="password" class="form-control" name="password">
+					</div>
+					<div class="form-wrapper">
+						<label for="">Role</label>
+						<input type="text" class="form-control" name="role">
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox"> I accept the Terms of Use & Privacy Policy.
+							<span class="checkmark"></span>
+						</label>
+					</div>
+					<button>Register Now</button>
+				</form>
+			</div>
+		</div>
+    });
+
+});

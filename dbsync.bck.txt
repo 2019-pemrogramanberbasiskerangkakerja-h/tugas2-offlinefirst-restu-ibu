@@ -1,0 +1,470 @@
+var Express = require("express");
+var bodyParser = require("body-parser");
+var PouchDB = require("pouchdb");
+var session = require('express-session');
+var path = require('path');
+//var popup = require ('popups');
+PouchDB.plugin(require('pouchdb-find'));
+var multer = require('multer');
+var upload = multer(); 
+var cookieParser = require('cookie-parser');
+var stringify = require('json-stringify-safe');
+//var MemoryStore = require('connect').session.MemoryStore;
+var app = Express();
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'vash');
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true,
+	// store: new MemoryStore({ 
+ //        reapInterval: 60000 * 10
+ //    })
+}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+app.use(upload.array());
+app.use(cookieParser());
+
+var database = new PouchDB('dbsync');
+
+// FUNCTION
+const parseJSONAsync = (JSONString) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(JSON.parse(JSONString))
+    })
+  })
+}
+
+function checkSignIn(req, res){
+   if(req.session.user){
+      next();     //If session exists, proceed to page
+   } else {
+      var err = new Error("Not logged in!");
+      console.log(req.session.user);
+      next(err);  //Error, trying to access unauthorized page!
+   }
+}
+
+// ppage
+app.get('/login', function(req, res) {
+	res.render('coba');
+});
+
+app.get('/addgates', function(req, res) {
+	res.render('addgate');
+});
+
+app.get('/daftar', function(req, res) {
+	res.render('daftar');
+});
+
+
+
+// ROUTES
+
+// AUTH login
+app.post('/login', function(req, res, next) {
+	
+	var getUsername = req.body.nrp;
+	var getPassword = req.body.password;
+	var getRole = req.body.role;
+	var getUserGates = req.body.gates;
+	//console.log(getPassword + getUsername)
+
+	var getTime = req.body.currenttime;
+
+	if (getUsername && getPassword) {
+		var getAccount = database.find({ 
+			selector: {nrp : getUsername,password : getPassword, role : getRole}})
+			.then(function (result) {
+			// list of people shown here
+			if(result.docs.length>0){
+
+				
+
+				// var getGates = database.find({ 
+				// 	selector: {gates : getUserGates,role : getRole}})
+				// 	.then(function (result2) {
+
+				// 	if(result2.docs.length>0){
+
+				// 		database.get(getUsername, function(err, doc) {
+				// 		  if (err) {
+				// 		    return console.log(err);
+				// 		  } else {
+				// 		    const data = JSON.stringify(res);
+				// 		    const user = JSON.parse(data);
+				// 		    console.log(user);
+				// 		  }
+				// 		});
+
+
+				// 		var gatesx = getUserGates;
+				// 		var rolesx = getRole;
+				// 		//console.log(result2);
+				// 		console.log(getRole)
+
+				// 	}
+				// 	else {
+				// 		//res.send("User tidak ditemukan!");
+				// 		//res.redirect(200, '/login', {message: "Invalid credentials!"});
+				// 		return res.status(400).send({
+				//             "status": "error",
+				//             "message": "Gates not found / incorrect"
+				//         });
+				// 	}
+
+				// }).then(function(result2){
+					
+
+				// }).catch(function(err) {
+				//   console.log(JSON.stringify(err));
+				// });
+
+				console.log('luaran');
+
+				// //Reading the contents of a Document
+				// database.get(getUsername, function(err, docUser) {
+				//    if (err) {
+				//       return console.log(err);
+				//    } else {
+				//    	var stringified = JSON.parse(stringify(docUser));
+				// 	const parseJSON = JSON.stringify(stringified);
+				// 	const user = JSON.parse(parseJSON);
+				// 	console.log(parseJSON);
+				//     var getRoleUser = user.role;
+				// 	getRoleUser.toString();
+				// 	req.session.user = getRoleUser;
+				// 	console.log(req.session.user);
+				// 	next();
+				//    }
+				// });
+
+				// database.get(getUserGates, function(err, docUserGates) {
+				//    if (err) {
+				//       return console.log(err);
+				//    } else {
+				//    	var stringifiedGates = JSON.parse(stringify(docUserGates));
+				// 	const parseJSONGates = JSON.stringify(stringifiedGates);
+				// 	const userGates = JSON.parse(parseJSONGates);
+				// 	console.log(parseJSONGates);
+				// 	var getTableGates = userGates.gates;
+				//   	var getTableRole = userGates.role;
+				//   	getTableGates.toString();
+				//   	getTableRole.toString();					
+				// 	//req.session.user = getRoleUser;
+				// 	console.log(getTableGates + ' ' + getTableRole);
+				// 	next();
+				//    }
+				// });
+
+				// if (getRoleUser === getTableRole){
+				// 	console.log("sama cuy");
+				// }
+
+				// parsing JSON
+				// var queryUser = database.get(getUsername);
+				// queryUser.then(function(res) {
+				//   console.log(JSON.stringify(res));
+				//   const parseJSON = JSON.stringify(res);
+				//   try {
+				// 	  const user = JSON.parse(parseJSON);
+				// 	  //console.log(user.nrp);
+				// 	  var getRoleUser = user.role;
+				// 	  getRoleUser.toString();
+				// 	  req.session.user = tetes;
+				// 	  console.log(req.session.user);
+				// 	  next();
+				// 	} catch(err) {
+				// 	  console.error(err)
+				// 	}
+				//   //console.log(req.session.user.password);
+				// }).catch(function(err) {
+				//   console.log(JSON.stringify(err));
+				// });
+				
+
+				// var queryGates = database.get(getUserGates);
+				// queryGates.then(function(res) {
+				//   console.log(JSON.stringify(res));
+				//   const parseJSON = JSON.stringify(res);
+				//   try {
+				// 	  const gates = JSON.parse(parseJSON);
+				// 	  //console.log(user.nrp);
+				// 	  var getTableGates = gates.gates;
+				// 	  var getTableRole = gates.role;
+				// 	  getTableGates.toString();
+				// 	  getTableRole.toString();
+				// 	  req.session.user = tetes;
+				// 	  console.log(req.session.user);
+				// 	  next();
+				// 	} catch(err) {
+				// 	  console.error(err)
+				// 	}
+				//   //console.log(req.session.user.password);
+				// }).catch(function(err) {
+				//   console.log(JSON.stringify(err));
+				// });
+
+
+				//req.session.user = 	getUsername.toString();
+				//console.log(req.session.user);
+
+
+
+				res.redirect(200, '/home');
+			}
+			else {
+				//res.send("User tidak ditemukan!");
+				//res.redirect(200, '/login', {message: "Invalid credentials!"});
+				return res.status(400).send({
+		            "status": "error",
+		            "message": "User not found / password is incorrect"
+		        });
+			}
+		}).then(function(QueryUser){
+			database.get(getUsername, function(err, docUser) {
+			  if (err) {
+			    return console.log(err);
+			  } else {
+				    var stringified = JSON.parse(stringify(docUser));
+					const parseJSON = JSON.stringify(stringified);
+					const user = JSON.parse(parseJSON);
+					//console.log(parseJSON);
+				    var getRoleUser = stringified.role;
+				    var getUsernameUser = user.nrp;
+					getRoleUser.toString();
+					req.session.user = getRoleUser;
+					console.log(req.session.user);
+					
+					next();
+			  }
+			}).then(function(docGates){
+
+				database.get(getUserGates, function(err, docQueryGates) {
+				  if (err) {
+				    return console.log(err);
+				  } else {
+					    var queryGates = JSON.parse(stringify(docQueryGates));
+						const parseJSONQuery = JSON.stringify(queryGates);
+						const user = JSON.parse(parseJSONQuery);
+						//console.log(parseJSON);
+					    var getRoleUserquery = queryGates.role;
+					    //var getUsernameUser = user.nrp;
+						//getRoleUser.toString();
+						req.session.user = getRoleUserquery;
+						console.log(req.session.user);
+
+
+						// get docs from above then
+						var stringified2 = JSON.parse(stringify(docGates));
+				 		var rolenyauser = stringified2.role;
+
+				 		if ( getRoleUserquery == rolenyauser){
+				 			console.log('compare berhasil')
+				 		}
+						
+						next();
+				  }
+				})
+
+					// console.log('ini docgates')
+					// console.log(docGates)
+				 // 	var stringified2 = JSON.parse(stringify(docGates));
+				 // 	console.log(stringified2.nrp)
+
+					// database.get(getUserGates, function(err, docUserGates) {
+					//   if (err) {
+					//     return console.log(err);
+					//   } else {
+					// 	    var stringified = JSON.parse(stringify(docUser));
+					// 		const parseJSON = JSON.stringify(stringified);
+					// 		const user = JSON.parse(parseJSON);
+					// 		console.log(parseJSON);
+					// 	    var getRoleUser = user.role;
+					// 	    var getUsernameUser = user.nrp;
+					// 		getRoleUser.toString();
+					// 		req.session.user = getRoleUser;
+					// 		console.log(req.session.user);
+					// 		next();
+					//   }
+					// });					
+				});
+
+
+		});
+		
+	} else {
+		res.send('Please enter Username and Password!');
+		res.end();
+	}
+});
+
+// User Home
+app.get('/home', function(req, res, next) {
+	res.send('Welcome back, ' + req.session.user + '!');
+	// if (request.session.user) {
+	// 	console.log(request.session.user);
+	// 	response.send('Welcome back, ' + getUsername + '!');
+	// } else {
+	// 	response.send('Please login to view this page!');
+	// }
+	// response.end();
+});
+
+// logout
+app.get('/logout', function(req, res){
+   request.session.destroy(function(){
+      console.log("user" + req.session.user + "has been logged out.")
+   });
+   response.redirect('/');
+});
+
+// CRUD Users
+app.get("/users", function(req, res) {
+    database.allDocs({
+        include_docs: true
+    }).then(function(result) {
+        res.send(result.rows.map(function(item) {
+            return item.doc;
+        }));
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.get("/users/:id", function(req, res) {
+    if (!req.params.id) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "An `id` is required"
+        });
+    }
+    database.get(req.params.id).then(function(result) {
+        res.send(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.post("/users", function(req, res) {
+    req.body._id = req.body.nrp;
+    if (!req.body.nrp) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `nrp` is required"
+        });
+    } else if (!req.body.password) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `password` is required"
+        });
+    }
+    database.post(req.body).then(function(result) {
+        res.send(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.delete("/users", function(req, res) {
+    if (!req.body.id) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "An `id` is required"
+        });
+    }
+    database.get(req.body.id).then(function(result) {
+        return database.remove(result);
+    }).then(function(result) {
+        res.send(result);
+        console.log(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+
+
+// CRUD GATES
+app.get("/gates", function(req, res) {
+    database.allDocs({
+        include_docs: true
+    }).then(function(result) {
+        res.send(result.rows.map(function(item) {
+            return item.doc;
+        }));
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.get("/gates/:id", function(req, res) {
+    if (!req.params.id) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "An `id` is required"
+        });
+    }
+    database.get(req.params.id).then(function(result) {
+        res.send(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.post("/gates", function(req, res) {
+    req.body._id = req.body.gates;
+    if (!req.body.gates) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `nrp` is required"
+        });
+    } else if (!req.body.role) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `password` is required"
+        });
+    }
+    else if (!req.body.time_start) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `time start` is required"
+        });
+    }
+    else if (!req.body.time_end) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "A `time end` is required"
+        });
+    }
+    database.post(req.body).then(function(result) {
+        res.send(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+app.delete("/gates", function(req, res) {
+    if (!req.body.id) {
+        return res.status(400).send({
+            "status": "error",
+            "message": "An `id` is required"
+        });
+    }
+    database.get(req.body.id).then(function(result) {
+        return database.remove(result);
+    }).then(function(result) {
+        res.send(result);
+        console.log(result);
+    }, function(error) {
+        res.status(400).send(error);
+    });
+});
+
+
+
+var server = app.listen(3000, function() {
+    database.info().then(function(info) {
+        console.log(info);
+        console.log("Listening on port %s...", server.address().port);
+    });
+});
+app.use('/static', Express.static('static'))

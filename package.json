@@ -4,12 +4,20 @@
   "description": "PuchDB-Async for implementing offline first with Node.Js",
   "main": "index.js",
   "dependencies": {
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.19.0",
+    "connect": "^3.6.6",
+    "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
-    "express-session": "^1.15.6",
+    "express-session": "^1.16.1",
+    "expressjs": "^1.0.1",
+    "json-stringify-safe": "^5.0.1",
+    "multer": "^1.4.1",
+    "npm": "^6.9.0",
+    "path": "^0.12.7",
     "pouchdb": "^7.0.0",
     "pouchdb-find": "^7.0.0",
-    "pouchdb-silverlining": "^0.1.0"
+    "pouchdb-silverlining": "^0.1.0",
+    "vash": "^0.12.6"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,0 +1,41 @@
+@html.extend('cobalayout',function(model){
+
+	@html.block('body',function(model){
+
+            <h1>@model.title</h1>
+            <div class="wrapper" style="background-image: url('static/images/bg-registration-form-2.jpg');">
+			<div class="inner">
+				<form action="/gates" method="POST">
+					<h3>Add Gates Form</h3>
+					<div class="form-group">
+						<div class="form-wrapper">
+							<label for="">Gate Name</label>
+							<input type="text" class="form-control" name="gates">
+						</div>
+						<div class="form-wrapper">
+							<label for="">Role Name</label>
+							<input type="text" class="form-control" name="role">
+						</div>
+					</div>
+					<div class="form-wrapper">
+						<label for="">Time S</label>
+						<input type="text" class="form-control" name="time_start">
+					</div>
+					<div class="form-wrapper">
+						<label for="">Time E</label>
+						<input type="text" class="form-control" name="time_end">
+					</div>
+					
+					<div class="checkbox">
+						<label>
+							<input type="checkbox"> I accept the Terms of Use & Privacy Policy.
+							<span class="checkmark"></span>
+						</label>
+					</div>
+					<button>Register Now</button>
+				</form>
+			</div>
+		</div>
+    });
+
+});

@@ -1,0 +1,7 @@
+2019/05/06-16:51:00.028 e4c Recovering log #390
+2019/05/06-16:51:00.028 e4c Level-0 table #392: started
+2019/05/06-16:51:00.110 e4c Level-0 table #392: 289 bytes OK
+2019/05/06-16:51:00.189 e4c Delete type=0 #390
+2019/05/06-16:51:00.190 e4c Delete type=2 #391
+2019/05/06-16:51:00.190 e4c Delete type=3 #388
+2019/05/06-16:51:00.192 3b8 Compacting 11@0 + 1@1 files

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Tulis Example</title>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+<div class="container">
+
+  <h2>Add Security Gate System</h2>
+
+  <form action="/gates" method="POST">
+
+    <div class="form-group">
+
+      <label for="gates">Gate:</label>
+
+      <input type="text" class="form-control" id="gates" placeholder="Gate" name="gates">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="role">Role:</label>
+
+      <input type="text" class="form-control" id="role" placeholder="Role" name="role">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="time_start">Start:</label>
+
+      <input type="text" class="form-control" id="time_start" placeholder="00:00:00" name="time_start">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="time_end">End:</label>
+
+      <input type="text" class="form-control" id="time_end" placeholder="00:00:00" name="time_end">
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+
+</div>
+
+
+
+</body>
+
+</html>
